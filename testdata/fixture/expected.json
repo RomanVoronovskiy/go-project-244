@@ -1,0 +1,58 @@
+[
+  {
+    "key": "common",
+    "type": "nested",
+    "before": null,
+    "after": null,
+    "children": [
+      {"key": "follow", "type": "added", "before": null, "after": false},
+      {"key": "setting1", "type": "unchanged", "before": "Value 1", "after": "Value 1"},
+      {"key": "setting2", "type": "removed", "before": 200, "after": null},
+      {"key": "setting3", "type": "updated", "before": true, "after": null},
+      {"key": "setting4", "type": "added", "before": null, "after": "blah blah"},
+      {"key": "setting5", "type": "added", "before": null, "after": {"key5": "value5"}},
+      {
+        "key": "setting6",
+        "type": "nested",
+        "before": null,
+        "after": null,
+        "children": [
+          {
+            "key": "doge",
+            "type": "nested",
+            "before": null,
+            "after": null,
+            "children": [
+              {"key": "wow", "type": "updated", "before": "", "after": "so much"}
+            ]
+          },
+          {"key": "key", "type": "unchanged", "before": "value", "after": "value"},
+          {"key": "ops", "type": "added", "before": null, "after": "vops"}
+        ]
+      }
+    ]
+  },
+  {
+    "key": "group1",
+    "type": "nested",
+    "before": null,
+    "after": null,
+    "children": [
+      {"key": "baz", "type": "updated", "before": "bas", "after": "bars"},
+      {"key": "foo", "type": "unchanged", "before": "bar", "after": "bar"},
+      {"key": "nest", "type": "updated", "before": {"key": "value"}, "after": "str"}
+    ]
+  },
+  {
+    "key": "group2",
+    "type": "removed",
+    "before": {"abc": 12345, "deep": {"id": 45}},
+    "after": null
+  },
+  {
+    "key": "group3",
+    "type": "added",
+    "before": null,
+    "after": {"deep": {"id": {"number": 45}}, "fee": 100500}
+  }
+]

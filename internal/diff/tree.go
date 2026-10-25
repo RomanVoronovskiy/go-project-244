@@ -1,0 +1,72 @@
+// Package diff builds an ordered tree independently of input and output formats.
+package diff
+
+import (
+	"reflect"
+	"sort"
+)
+
+// Type describes how a configuration property changed.
+type Type string
+
+const (
+	Added     Type = "added"
+	Removed   Type = "removed"
+	Updated   Type = "updated"
+	Unchanged Type = "unchanged"
+	Nested    Type = "nested"
+)
+
+// Node describes one property. Children exist only when both values are objects.
+// Before and After preserve source values, including explicit nulls.
+type Node struct {
+	Key      string `json:"key"`
+	Type     Type   `json:"type"`
+	Before   any    `json:"before"`
+	After    any    `json:"after"`
+	Children []Node `json:"children,omitempty"`
+}
+
+// Build returns a sorted difference tree without modifying the input maps.
+func Build(first, second map[string]any) []Node {
+	keys := make(map[string]struct{}, len(first)+len(second))
+	for key := range first {
+		keys[key] = struct{}{}
+	}
+	for key := range second {
+		keys[key] = struct{}{}
+	}
+	sorted := make([]string, 0, len(keys))
+	for key := range keys {
+		sorted = append(sorted, key)
+	}
+	sort.Strings(sorted)
+	result := make([]Node, 0, len(sorted))
+	for _, key := range sorted {
+		before, hasBefore := first[key]
+		after, hasAfter := second[key]
+		result = append(result, buildNode(key, before, after, hasBefore, hasAfter))
+	}
+	return result
+}
+
+func buildNode(key string, before, after any, hasBefore, hasAfter bool) Node {
+	node := Node{Key: key, Before: before, After: after}
+	oldObject, oldIsObject := before.(map[string]any)
+	newObject, newIsObject := after.(map[string]any)
+	switch {
+	case !hasBefore:
+		node.Type = Added
+	case !hasAfter:
+		node.Type = Removed
+	case oldIsObject && newIsObject:
+		node.Type = Nested
+		node.Before, node.After = nil, nil
+		node.Children = Build(oldObject, newObject)
+	case reflect.DeepEqual(before, after):
+		node.Type = Unchanged
+	default:
+		node.Type = Updated
+	}
+	return node
+}
