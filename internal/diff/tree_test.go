@@ -24,15 +24,15 @@ func TestBuild(t *testing.T) {
 	require.Equal(t, []diff.Node{
 		{Key: "added", Type: diff.Added, After: second["added"]},
 		{Key: "changed", Type: diff.Updated, Before: first["changed"], After: "scalar"},
-		{Key: "list", Type: diff.Unchanged, Before: first["list"], After: second["list"]},
+		{Key: "list", Type: diff.Unchanged, Before: first["list"]},
 		{Key: "nested", Type: diff.Nested, Children: []diff.Node{
 			{Key: "new", Type: diff.Added},
 			{Key: "old", Type: diff.Removed},
-			{Key: "same", Type: diff.Unchanged, Before: 1.0, After: 1.0},
+			{Key: "same", Type: diff.Unchanged, Before: 1.0},
 		}},
 		{Key: "null", Type: diff.Removed},
 		{Key: "removed", Type: diff.Removed, Before: first["removed"]},
-		{Key: "same", Type: diff.Unchanged, Before: false, After: false},
+		{Key: "same", Type: diff.Unchanged, Before: false},
 	}, tree)
 	// Building a tree must not change either source map.
 	require.Contains(t, first, "removed")

@@ -11,7 +11,8 @@ import (
 
 func TestEmptyDiff(t *testing.T) {
 	for _, test := range []struct{ format, expected string }{
-		{"stylish", "{\n}"}, {"", "{\n}"}, {"plain", ""}, {"json", "[]"},
+		{"stylish", "{\n}"}, {"", "{\n}"}, {"plain", ""},
+		{"json", "{\n  \"key\": \"\",\n  \"type\": \"root\",\n  \"children\": []\n}"},
 	} {
 		t.Run(test.format, func(t *testing.T) {
 			actual, err := formatters.Format([]diff.Node{}, test.format)

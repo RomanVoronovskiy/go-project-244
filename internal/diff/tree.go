@@ -11,19 +11,19 @@ type Type string
 
 const (
 	Added     Type = "added"
-	Removed   Type = "removed"
-	Updated   Type = "updated"
+	Removed   Type = "deleted"
+	Updated   Type = "changed"
 	Unchanged Type = "unchanged"
 	Nested    Type = "nested"
 )
 
 // Node describes one property. Children exist only when both values are objects.
-// Before and After preserve source values, including explicit nulls.
+// Before and After preserve source values. JSON omits nil values (null).
 type Node struct {
 	Key      string `json:"key"`
 	Type     Type   `json:"type"`
-	Before   any    `json:"before"`
-	After    any    `json:"after"`
+	Before   any    `json:"value1,omitempty"`
+	After    any    `json:"value2,omitempty"`
 	Children []Node `json:"children,omitempty"`
 }
 
@@ -65,6 +65,7 @@ func buildNode(key string, before, after any, hasBefore, hasAfter bool) Node {
 		node.Children = Build(oldObject, newObject)
 	case reflect.DeepEqual(before, after):
 		node.Type = Unchanged
+		node.After = nil
 	default:
 		node.Type = Updated
 	}

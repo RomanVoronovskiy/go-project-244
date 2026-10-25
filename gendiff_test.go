@@ -78,14 +78,16 @@ func TestGenDiffErrors(t *testing.T) {
 	}
 }
 
-func TestGenDiffPreservesNullValuesInJSON(t *testing.T) {
+func TestGenDiffRepresentsNullValuesInJSON(t *testing.T) {
 	result, err := code.GenDiff(fixture("file1.json"), fixture("file2.json"), "json")
 	require.NoError(t, err)
-	var tree []map[string]any
+	var tree map[string]any
 	require.NoError(t, json.Unmarshal([]byte(result), &tree))
-	children := tree[0]["children"].([]any)
+	require.Equal(t, "root", tree["type"])
+	common := tree["children"].([]any)[0].(map[string]any)
+	children := common["children"].([]any)
 	setting3 := children[3].(map[string]any)
-	require.Equal(t, "updated", setting3["type"])
-	require.Contains(t, setting3, "after")
-	require.Nil(t, setting3["after"])
+	require.Equal(t, "changed", setting3["type"])
+	require.Equal(t, true, setting3["value1"])
+	require.NotContains(t, setting3, "value2")
 }

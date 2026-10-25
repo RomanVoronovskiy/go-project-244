@@ -84,11 +84,13 @@ Property 'common.setting5' was added with value: [complex value]
 `[complex value]`. В `stylish` массивы представлены списками в квадратных скобках;
 они сравниваются как целые значения, без построения диффа отдельных элементов.
 
-В `json` возвращается массив узлов с полями `key`, `type`, `before`, `after`.
-Типы узлов: `added`, `removed`, `updated`, `unchanged`, `nested`. Вложенные узлы
-содержат `children`. Для них `before` и `after` равны `null`, поскольку отличия
-находятся в дочерних узлах. Отсутствующее значение отличается от явного `null`
-по типу узла. Пустое дерево сериализуется как `[]`.
+В `json` возвращается объект с пустым `key`, типом `root` и массивом `children`.
+Узлы имеют поля `key`, `type`, `value1` (старое значение), `value2` (новое значение).
+Типы узлов: `added`, `deleted`, `changed`, `unchanged`, `nested`. Вложенные узлы
+содержат `children`, а исходные значения в них не дублируются. У неизменённых
+узлов записывается только `value1`. Поля со значением `null` опускаются; например,
+узел `changed` без `value2` означает изменение значения на `null`.
+У пустого корневого объекта `children` равен `[]`.
 
 Корень конфигурации должен быть объектом. YAML-файл должен содержать один документ,
 ключи вложенных объектов должны быть строковыми. Ошибки чтения, парсинга,
@@ -179,4 +181,4 @@ docs/                 Записи демонстраций
 | 7 | [YAML и смешанные входные форматы](https://asciinema.org/a/YYZy84q56HwHMgeC) | [flat-yaml.cast](docs/flat-yaml.cast) |
 | 8 | [Вложенные структуры, stylish](https://asciinema.org/a/kZ0k2l5iJrg16ASC) | [nested-stylish.cast](docs/nested-stylish.cast) |
 | 9 | [Формат plain](https://asciinema.org/a/j0oR1OM87GmnzBNx) | [plain.cast](docs/plain.cast) |
-| 10 | [Формат json](https://asciinema.org/a/iFVaEtl8W1g7Orhw) | [json.cast](docs/json.cast) |
+| 10 | [Формат json](https://asciinema.org/a/fBVJdSjX8eGYjc1S) | [json.cast](docs/json.cast) |
