@@ -1,4 +1,3 @@
-// Package parsers decodes configuration data without reading or writing files.
 package parsers
 
 import (
@@ -11,7 +10,6 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Parse decodes one JSON or YAML object into the same set of Go value types.
 func Parse(data []byte, format string) (map[string]any, error) {
 	switch format {
 	case "json":
@@ -44,7 +42,6 @@ func parseYAML(data []byte) (map[string]any, error) {
 	if err := decoder.Decode(&extra); !errors.Is(err, io.EOF) {
 		return nil, errors.New("configuration must contain exactly one YAML document")
 	}
-	// A JSON round trip normalizes YAML numbers and validates nested object keys.
 	normalized, err := json.Marshal(result)
 	if err != nil {
 		return nil, err

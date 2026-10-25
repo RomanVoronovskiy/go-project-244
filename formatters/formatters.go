@@ -1,4 +1,3 @@
-// Package formatters renders a difference tree as stylish, plain or JSON output.
 package formatters
 
 import (
@@ -8,7 +7,6 @@ import (
 	"code/internal/diff"
 )
 
-// Format selects a formatter. An empty name selects stylish.
 func Format(tree []diff.Node, name string) (string, error) {
 	switch name {
 	case "", "stylish":

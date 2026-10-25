@@ -1,4 +1,3 @@
-// Command check-coverage enforces a statement coverage threshold on any platform.
 package main
 
 import (
@@ -51,7 +50,6 @@ func readCoverage(input io.Reader) (float64, error) {
 		if err != nil {
 			return 0, err
 		}
-		// With -coverpkg the same source block can appear in several test binaries.
 		block.covered = block.covered || blocks[name].covered
 		blocks[name] = block
 	}

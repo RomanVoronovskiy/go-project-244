@@ -34,7 +34,6 @@ func TestBuild(t *testing.T) {
 		{Key: "removed", Type: diff.Removed, Before: first["removed"]},
 		{Key: "same", Type: diff.Unchanged, Before: false},
 	}, tree)
-	// Building a tree must not change either source map.
 	require.Contains(t, first, "removed")
 	require.NotContains(t, first, "added")
 	require.Contains(t, second, "added")

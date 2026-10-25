@@ -1,4 +1,3 @@
-// Package diff builds an ordered tree independently of input and output formats.
 package diff
 
 import (
@@ -6,7 +5,6 @@ import (
 	"sort"
 )
 
-// Type describes how a configuration property changed.
 type Type string
 
 const (
@@ -17,8 +15,6 @@ const (
 	Nested    Type = "nested"
 )
 
-// Node describes one property. Children exist only when both values are objects.
-// Before and After preserve source values. JSON omits nil values (null).
 type Node struct {
 	Key      string `json:"key"`
 	Type     Type   `json:"type"`
@@ -27,7 +23,6 @@ type Node struct {
 	Children []Node `json:"children,omitempty"`
 }
 
-// Build returns a sorted difference tree without modifying the input maps.
 func Build(first, second map[string]any) []Node {
 	keys := make(map[string]struct{}, len(first)+len(second))
 	for key := range first {

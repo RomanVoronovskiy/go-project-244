@@ -1,4 +1,3 @@
-// Package code compares JSON and YAML configuration files.
 package code
 
 import (
@@ -12,8 +11,6 @@ import (
 	"code/parsers"
 )
 
-// GenDiff returns the difference between two files in stylish, plain or json format.
-// An empty format selects stylish. The returned string has no trailing newline.
 func GenDiff(filepath1, filepath2, format string) (string, error) {
 	first, err := readConfig(filepath1)
 	if err != nil {
